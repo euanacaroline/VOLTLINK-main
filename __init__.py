@@ -1,0 +1,1 @@
+# Arquivo para o Python reconhecer esta pasta como módulo
