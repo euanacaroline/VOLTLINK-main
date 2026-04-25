@@ -5,18 +5,18 @@ from database.db_handler import db_singleton
 def limpar_tela(): 
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def cadastrar_cartao(user_id, tipo_metodo): 
-    print(f"\n    CADASTRO DE NOVO CARTÃO  ({tipo_metodo.upper()})   ")
-    """Valida e salva um novo cartão no banco de dados."""
+def cadastrar_cartao(usuario): 
     tipo = input("Digite (1) para CRÉDITO ou (2) para DÉBITO: ")
-    tipo_escolhido = "Crédito" if tipo == "1" else "Débito"
+    metodo = "Crédito" if tipo == "1" else "Débito"
+    print(f"\n    CADASTRO DE NOVO CARTÃO  ({metodo.upper()})   ")
+    """Valida e salva um novo cartão no banco de dados."""
 
     nome_titular = input("Nome do Titular (como no cartão): ").strip().upper()
     if not nome_titular: 
         print(" Erro: O nome não pode estar vazio. ")
         return None
 
-    numero_cartao = input("Número do cartão (16 dígitos):  ").replace(" ", " ") 
+    numero_cartao = input("Número do cartão (16 dígitos):  ").replace(" ", "") 
     if len(numero_cartao) != 16 or not numero_cartao.isdigit():
         print(" Erro: Cartão inválido! Digite os 16 números. ")
         return None 
@@ -31,11 +31,11 @@ def cadastrar_cartao(user_id, tipo_metodo):
         print(" Erro: CVV inválido!")
         return None 
     
-    sucesso = cadastrar_cartao_no_banco(user_id, tipo_metodo, nome_titular, numero_cartao, validade)
+    sucesso = cadastrar_cartao_no_banco(usuario['id'], metodo, nome_titular, numero_cartao, validade)
     if sucesso: 
         print("\n ✅ Cartão salvo no banco de dados!")
     else: 
-        print("n\ Erro ao salvar. ")
+        print("\n Erro ao salvar. ")
 
 
 def cadastrar_cartao_no_banco(user_id, tipo_metodo, nome_titular, numero_cartao, validade): 
@@ -92,3 +92,33 @@ def atualizar_dados_cartao(id_usuario, id_cartao, nome_titular, numero_cartao, v
         return (True, "Cartão atualizado com sucesso!")
     except Exception as e:
         return (False, f"Erro ao atualizar: {e}")
+
+
+def processar_pagamento(usuario, valor):
+    """Simula a cobrança no cartão cadastrado."""
+    limpar_tela()
+    print(f"💳   PAGAMENTO VOLTLINK   ")
+    print(f"--------------------------")
+    print(f"Valor da recarga: R$ {valor:.2f}")
+    
+    conn = db_singleton.get_connection()
+    # Busca se o usuário tem cartão
+    cartao = conn.execute("SELECT card_number FROM payment_methods WHERE user_id = ?", (usuario['id'],)).fetchone()
+    
+    if not cartao:
+        print("\n❌ Nenhum cartão cadastrado!")
+        print("Redirecionando para cadastro de cartão...")
+        input("Pressione Enter...")
+        # Aqui chamaria sua função de cadastrar_cartao()
+        return False
+
+    ultimo_digitos = cartao['card_number'][-4:]
+    print(f"Cobrando no cartão final: **** {ultimo_digitos}")
+    
+   
+    print("\n⏳ Processando com a operadora...")
+    import time
+    time.sleep(2) # Simula um delay real
+    print("✅ Pagamento aprovado!")
+    return True
+    

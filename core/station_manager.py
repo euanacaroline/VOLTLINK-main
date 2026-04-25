@@ -58,17 +58,45 @@ def atualizar_vagas_posto(id_posto, novos_disponiveis):
     except Exception as e:
         return (False, f"Erro ao atualizar carregadores: {e}")
 
-def enviar_avaliação(id_posto, nome_usuario, nota, comentario):
+def enviar_avaliacao(id_posto, usuario, nota, comentario):
     """Adiciona uma avaliação a um eletroposto."""
     conn = db_singleton.get_connection()
-    if not conn:
-        return (False, "Erro de conexão.")
     try:
-        conn.execute("INSERT INTO reviews (station_id, user_name, rating, comment) VALUES (?, ?, ?, ?)", (id_posto, nome_usuario, nota, comentario))
+        conn.execute("""
+            INSERT INTO reviews (station_id, user_name, rating, comment) 
+            VALUES (?, ?, ?, ?)
+        """, (id_posto, usuario['name'], nota, comentario))
+        
         conn.commit()
-        return (True, "Avaliação enviada com sucesso!")
+        return (True, "Avaliação enviada!")
+    
     except Exception as e:
-        return (False, f"Erro ao enviar avaliação: {e}")
+        print("Erro interno: {e}")
+        return False
+
+def avaliar_posto_interface(usuario, id_posto):
+    """Faz as perguntas no terminal e chama a gravação no banco."""
+    print("\n" + "="*30)
+    print(" ⭐ AVALIAR ELETROPOSTO ")
+    print("="*30)
+    
+    try:
+        nota = int(input("Nota de 1 a 5: "))
+        if nota < 1 or nota > 5:
+            print("❌ Nota inválida! Escolha entre 1 e 5.")
+            return
+            
+        comentario = input("Comentário: ").strip()
+        
+        sucesso, msg = enviar_avaliacao(id_posto, usuario, nota, comentario)
+        
+        if sucesso:
+            print(f"\n✅ {msg}")
+        else:
+            print(f"\n❌ {msg}")
+            
+    except ValueError:
+        print("❌ Erro: Digite um número inteiro para a nota.")
 
 def buscar_avaliacoes_postos(id_posto):
     """Retorna todas as avaliações de um eletroposto específico."""

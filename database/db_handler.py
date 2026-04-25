@@ -52,7 +52,7 @@ def create_tables():
 
     cursor = conn.cursor()
 
-    # Tabela de Usuários
+    # Usuários
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -91,7 +91,7 @@ def create_tables():
     );
     """)
 
-    # Tabela de Formas de Pagamento
+    # Formas de Pagamento
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS payment_methods (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -105,6 +105,50 @@ def create_tables():
     );
     """)
 
+
+    # VEÍCULOS 
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS vehicles (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        model TEXT NOT NULL,
+        plate TEXT NOT NULL,
+        battery_capacity REAL NOT NULL,
+        connector_type TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users (id)
+    );
+    """)
+
+
+    # CRIAR ADMIN PADRÃO (Se não existir)
+    cursor.execute("SELECT COUNT(*) FROM users WHERE email = ?", ('admin@voltlink.com',))
+    if cursor.fetchone()[0] == 0:
+        cursor.execute("""
+            INSERT INTO users (name, email, phone_number, password, is_admin)
+            VALUES (?, ?, ?, ?, ?)
+        """, ('Administrador Master', 'admin@voltlink.com', '999999999', 'admin123', 1))
+        print("✅ Usuário Admin (admin@voltlink.com) criado!")
+
+
+    # POSTOS INICIAIS 
+    cursor.execute("SELECT COUNT(*) FROM stations")
+    if cursor.fetchone()[0] == 0:
+        postos_iniciais = [
+             ('Eletroposto Shopping Recife', 'Rua Padre Carapuceiro, 777, Boa Viagem', 10, 8, 50.0),
+             ('Eletroposto RioMar Shopping', 'Av. Republica do Libano, 251, Pina', 12, 5, 60.0),
+             ('Posto Shell - Agamenon', 'Av. Gov. Agamenon Magalhães, 3000', 6, 0, 40.0),
+             ('Eletroposto Parque da Jaqueira', 'Rua do Futuro, s/n, Graças', 4, 2, 22.0)
+             ]
+        cursor.executemany("""
+            INSERT INTO stations (name, address, total_chargers, available_chargers, max_power_kw)
+            VALUES (?, ?, ?, ?, ?)
+        """, postos_iniciais)
+        print("Postos de teste adicionados com sucesso!")
+
+
     conn.commit()
     # A conexão não é fechada aqui, pois é gerenciada pelo Singleton.
     print("Banco de dados e tabelas verificados/criados com sucesso.")
+
+

@@ -1,8 +1,7 @@
 import os
 from database.db_handler import db_singleton
-# Importamos o pagamento para chamar após o check-in
-from core.pagamento import tela_pagamento 
-
+from core.pagamento import processar_pagamento 
+from core.station_manager import avaliar_posto_interface
 def limpar_tela():
     os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -35,7 +34,6 @@ def fazer_checkin(usuario):
     bateria_desejada = int(input("Deseja carregar até quanto (%): "))
     
     # 3. Seleção do Posto
-    # Aqui listamos os postos do banco
     postos = conn.execute("SELECT id, name FROM stations").fetchall()
     print("\nPostos Disponíveis:")
     for p in postos:
@@ -46,39 +44,26 @@ def fazer_checkin(usuario):
     diferenca_percentual = bateria_desejada - bateria_atual
     kwh_a_carregar = (veiculo_selecionado['battery_capacity'] * diferenca_percentual) / 100
     valor_total = kwh_a_carregar * 2.00
-
+    
+    #5. Resumo e Confirmação
     print(f"\n--- RESUMO ---")
     print(f"Energia: {kwh_a_carregar:.2f} kWh")
     print(f"Valor a pagar: R$ {valor_total:.2f}")
     
-    input("\nConfirmar e ir para o Pagamento... (Enter)")
+    confirmar = input("\nConfirmar início da recarga e pagamento? (S/N): ").upper()
     
-    # 5. Chama o módulo de pagamento (Passando o valor calculado)
-    # tela_pagamento(valor_total) 
-    
-    print("\n✅ Recarga iniciada! Você receberá uma notificação ao concluir.")
-    input("Pressione Enter para finalizar...")
-
-
-# cálculos recarga
-
-    print(f"\n--- RESUMO DA RECARGA ---")
-    print(f"Posto: {id_posto}")
-    print(f"Total: R$ {valor_total:.2f}")
-    
-    input("\nConfirmar e ir para o Pagamento... (Enter)")
-    
-    
-    from core.pagamento import processar_pagamento
-    '''chamar função de pagamento '''
-    pagou = processar_pagamento(usuario, valor_total)
-    
-    if pagou:
-        print("\n⚡ PAGAMENTO APROVADO!")
-        print("Iniciando transferência de energia...")
-        # Aqui você pode colocar um mini loop de "Carregando..."
-        print("\n✅ Recarga concluída com sucesso! Dirija com segurança.")
+    if confirmar == "S":
+        pagou = processar_pagamento(usuario, valor_total)
+        if pagou:
+            print("\n⚡ PAGAMENTO APROVADO!")
+            print("⏳ Iniciando transferência de energia...")
+            print("\n✅ Recarga concluída com sucesso! Dirija com segurança.")
+            pergunta = input("\nDeseja avaliar este posto? (S/N): ").upper()
+            if pergunta == 'S':
+                # id_posto_input é a variável que você coletou no passo 3 do check-in
+                avaliar_posto_interface(usuario, id_posto)
+        else:
+            print("\n❌ Recarga cancelada: Pagamento não realizado.")
     else:
-        print("\n❌ Recarga cancelada: Pagamento não realizado.")
-    
+        print("\n❌ Operação cancelada pelo usuário.")
     input("\nPressione Enter para voltar ao menu...")

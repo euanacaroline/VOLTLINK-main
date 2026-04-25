@@ -6,7 +6,7 @@ import time
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from database import db_handler
-from ui import terminal_menu
+from ui.telas import menu_entrada
 from ui import logo_VoltLink
 
 def main():
@@ -19,7 +19,7 @@ def main():
     time.sleep(2) # Pausa para o usuário ver o logo.
 
     # 3. Inicia a interface do usuário.
-    terminal_menu.show_main_menu()
+    menu_entrada()
 
     # 4. Ao sair do menu, fecha a conexão com o banco de dados.
     db_handler.db_singleton.close_connection()
