@@ -8,6 +8,8 @@ def limpar_tela():
 def cadastrar_cartao(user_id, tipo_metodo): 
     print(f"\n    CADASTRO DE NOVO CARTÃO  ({tipo_metodo.upper()})   ")
     """Valida e salva um novo cartão no banco de dados."""
+    tipo = input("Digite (1) para CRÉDITO ou (2) para DÉBITO: ")
+    tipo_escolhido = "Crédito" if tipo == "1" else "Débito"
 
     nome_titular = input("Nome do Titular (como no cartão): ").strip().upper()
     if not nome_titular: 
