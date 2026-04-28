@@ -1,4 +1,5 @@
 import os
+import time
 from database.db_handler import db_singleton
 from core.pagamento import processar_pagamento 
 from core.station_manager import avaliar_posto_interface
@@ -89,7 +90,13 @@ def fazer_checkin(usuario):
         pagou = processar_pagamento(usuario, valor_total)
         if pagou:
             print("\n⚡ PAGAMENTO APROVADO!")
+            print("-" * 30) 
             print("⏳ Iniciando transferência de energia...")
+
+            for i in range(bateria_atual, bateria_desejada + 1):
+                print(f"\r🔋 Carregando... {i}%", end="", flush=True)
+                time.sleep(0.05)
+
             print("\n✅ Recarga concluída com sucesso! Dirija com segurança.")
             pergunta = input("\nDeseja avaliar este posto? (S/N): ").upper()
             if pergunta == 'S':
