@@ -29,10 +29,43 @@ def fazer_checkin(usuario):
         print("Opção inválida.")
         return
 
-    # 2. Dados da Recarga
-    bateria_atual = int(input("Nível atual da bateria (%): "))
-    bateria_desejada = int(input("Deseja carregar até quanto (%): "))
+    # 2. RECARGA
+    try:
+        '''Pede nível da bateria, valida, manda alerta'''
+        bateria_input = int(input("Nível atual da bateria (%): "))
     
+        if bateria_input < 0 or bateria_input > 100:
+            print("\n❌ Erro: O nível de bateria deve estar entre 0 e 100.")
+            input("Pressione Enter para tentar novamente...")
+            return 
+            
+        bateria_atual = bateria_input # Se passou na validação, aceita o valor
+
+        if bateria_atual <= 20:
+            print("\n🚨 ALERTA: POUCA BATERIA!")
+        elif 21 <= bateria_atual <= 50:
+            print("\n⚠️ Nível médio.")
+        elif 51 <= bateria_atual <= 100:
+            print("\n✅ Bateria bem.")
+
+        bateria_desejada = int(input("Deseja carregar até quanto (%): "))
+        
+        if bateria_desejada < 0 or bateria_desejada > 100:
+            print("\n❌ Erro: O objetivo de carga deve estar entre 0 e 100.")
+            input("Pressione Enter para tentar novamente...")
+            return
+            
+        if bateria_desejada <= bateria_atual:
+            print("\n❌ Erro: A bateria desejada deve ser maior que a atual.")
+            input("Pressione Enter para tentar novamente...")
+            return
+            
+    except ValueError:
+        print("\n❌ Erro: Digite apenas números inteiros para a bateria.")
+        input("Pressione Enter para tentar novamente...")
+        return
+    
+
     # 3. Seleção do Posto
     postos = conn.execute("SELECT id, name FROM stations").fetchall()
     print("\nPostos Disponíveis:")
