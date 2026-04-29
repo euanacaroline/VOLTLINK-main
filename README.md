@@ -47,6 +47,10 @@ Desenvolver um sistema robusto de gerenciamento de eletropostos que conecte usu�
 
     sys → Gestão de caminhos (paths) para garantir a modularização das pastas.
 
+    random → Geração de dados aleatórios, para criar a simulação de distâncias (1km a 15km) entre o usuário e os eletropostos mais próximos na busca.
+    
+    urllib.parse → Formatação de endereços e coordenadas em formato string para permitir a criação funcional de links da API web do Google Maps.
+
 ⸻
 
 💪 Desafios de Desenvolvimento (Destaques Técnicos)
@@ -59,11 +63,16 @@ Desenvolver um sistema robusto de gerenciamento de eletropostos que conecte usu�
 
 📌 Como iniciar o projeto:
 
-    Certifique-se de ter o Python instalado.
+1.  Pré-requisitos: Certifique-se de ter a linguagem Python 3 instalada em seu ambiente.
+2.  Preparação: Faça o clone do repositório na sua máquina.
+3.  Acesso ao Diretório: Pelo terminal, navegue até a pasta raiz do projeto.
+4.  Executar o sistema: Digite o comando abaixo e pressione Enter:
+    
+    python main.py
+    
+5.  Banco de Dados: Na primeira execução, o sistema gera o arquivo `voltlink.db` criando automaticamente todas as tabelas e inserindo postos de teste.
 
-    O Projeto deve ser iniciado pelo arquivo: main.py
-
-    O banco de dados será gerado automaticamente na primeira execução.
+Nota: Você pode acessar inicialmente o Painel de Gestão fazendo login com o e-mail: `admin@voltlink.com` e a senha: `admin123`.
 
 ⸻
 
