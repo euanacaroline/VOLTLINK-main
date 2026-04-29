@@ -18,14 +18,15 @@ Desenvolver um sistema robusto de gerenciamento de eletropostos que conecte usu�
 
 🚀 RELEASE 1.0 (Principais Features)
 
-👤 Cadastro de usuários e veículos: Registro de múltiplos carros por perfil.
-🔐 Sistema de login: Autenticação com validação via banco de dados.
-📍 Mapa de Eletropostos: Listagem real de pontos de recarga em Recife-PE.
-🔋 Check-in Inteligente: Validação de bateria (0-100%) com alertas de nível (🚨 Crítico, ⚠️ Médio, ✅ Seguro).
-💳 Integração de Pagamento: Cálculo automático de kWh e simulação de transação financeira.
-⏳ Simulação em tempo real: Contador progressivo de carga (animação de carregamento).
-⭐ Sistema de Avaliações: Feedback dos usuários sobre as estações de recarga.
-⚠️ Tratamento de Exceções: Validações rigorosas para evitar entradas inválidas (ex: bateria > 100%).
+👤 Gestão de Usuário (CRUD Completo): Cadastro, Login com autenticação via SQLite, "Minha Conta" e recuperação de senha.
+
+💳 Gestão de Pagamentos (CRUD de Cartões): Cadastro, listagem, edição e exclusão de cartões de crédito/débito com mascaramento de dados sensíveis.
+
+🛡️ Área Administrativa: Painel restrito para monitoramento de usuários e status do sistema.
+
+📍 Localização de Eletropostos: Listagem dinâmica de pontos de recarga em Recife-PE, exibindo endereço, status de ocupação (Disponível/Ocupado) e preço por kWh.
+
+🗺️ Menu Principal: Interface HUB intuitiva que conecta o perfil do motorista aos serviços de geolocalização e financeiro.
 
 ⸻
 
@@ -78,11 +79,13 @@ Nota: Você pode acessar inicialmente o Painel de Gestão fazendo login com o e-
 
 📌 Melhorias Futuras para a RELEASE 2.0
 
-Gestão de Tarifas: Implementar uma função para que o administrador do posto possa definir e atualizar o preço por kWh.
+🚗 Check-in de Veículos: Validação de bateria e alertas de segurança.
 
-Comparador de Preços: Criar uma funcionalidade de busca que liste os postos em ordem de preço, permitindo ao usuário comparar os valores dos concorrentes em Recife.
+🔋 Simulação de Recarga: Contador em tempo real e integração total com o station manager.
 
-Sistema de Favoritos: Permitir que o motorista salve os eletropostos com melhor custo-benefício em sua conta.
+📊 Comparador de Preços: Ferramenta para comparar tarifas entre eletropostos concorrentes.
+
+🏢 Portal do Proprietário: Cadastro de novos eletropostos por terceiros e gestão de preços.
 
 ⸻
 
