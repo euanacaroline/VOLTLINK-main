@@ -89,6 +89,13 @@ Nota: Você pode acessar inicialmente o Painel de Gestão fazendo login com o e-
 
 ⸻
 
+🔗 Links do projeto
+
+🎥 Vídeo de Apresentação: https://youtu.be/YHeOmeRUgkw?si=7uuUJnjFdJ4z-VDh
+📁 Documentação Completa: https://drive.google.com/drive/folders/1wWbUJZEsNz5M7aW_Y7VVfaZxD4p0m9bQ?usp=sharing
+
+⸻
+
 👨‍💻 Autoras
 
     Ana Caroline B. Nunes 
