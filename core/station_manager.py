@@ -46,6 +46,8 @@ def buscar_todos_postos():
     if not conn: return []
     return conn.execute("SELECT * FROM stations").fetchall()
 
+'''PRÓXIMA VA'''
+
 def atualizar_vagas_posto(id_posto, novos_disponiveis):
     """Atualiza a quantidade de carregadores disponíveis de um eletroposto."""
     conn = db_singleton.get_connection()
@@ -72,7 +74,7 @@ def enviar_avaliacao(id_posto, usuario, nota, comentario):
     
     except Exception as e:
         print("Erro interno: {e}")
-        return False
+        return False, f"erro ao enviar avaliação: {e}"
 
 def avaliar_posto_interface(usuario, id_posto):
     """Faz as perguntas no terminal e chama a gravação no banco."""
@@ -97,6 +99,8 @@ def avaliar_posto_interface(usuario, id_posto):
             
     except ValueError:
         print("❌ Erro: Digite um número inteiro para a nota.")
+
+'''PRÓXIMA VA '''
 
 def buscar_avaliacoes_postos(id_posto):
     """Retorna todas as avaliações de um eletroposto específico."""

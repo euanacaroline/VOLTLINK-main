@@ -37,7 +37,6 @@ def cadastrar_cartao(usuario):
     else: 
         print("\n Erro ao salvar. ")
 
-
 def cadastrar_cartao_no_banco(user_id, tipo_metodo, nome_titular, numero_cartao, validade): 
     conn = db_singleton.get_connection()
     if not conn: return (False, "Erro de conexão")
@@ -53,7 +52,6 @@ def cadastrar_cartao_no_banco(user_id, tipo_metodo, nome_titular, numero_cartao,
     except Exception as e: 
         print(f"Erro: {e}")
         return False
-  
 
 def buscar_cartoes_usuario(id_usuario):
     """Busca no banco todos os cartões que pertencem ao usuário logado"""
@@ -92,7 +90,6 @@ def atualizar_dados_cartao(id_usuario, id_cartao, nome_titular, numero_cartao, v
         return (True, "Cartão atualizado com sucesso!")
     except Exception as e:
         return (False, f"Erro ao atualizar: {e}")
-
 
 def processar_pagamento(usuario, valor):
     """Simula a cobrança no cartão cadastrado."""

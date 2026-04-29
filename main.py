@@ -1,5 +1,5 @@
 import sys
-import os
+import os 
 import time
 
 # Garante que o Python sempre encontre a pasta VOLTLINK, independente de onde o terminal foi aberto
